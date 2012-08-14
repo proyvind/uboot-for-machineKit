@@ -10,7 +10,7 @@
  */
 
 #include <common.h>
-#if !defined(CONFIG_PANIC_HANG)
+#if !defined(CONFIG_PANIC_HANG) && !defined(CONFIG_SPL_BUILD)
 #include <command.h>
 #endif
 
@@ -21,7 +21,7 @@ static void panic_finish(void)
 	putc('\n');
 #if defined(CONFIG_PANIC_HANG)
 	hang();
-#else
+#elif !defined(CONFIG_SPL_BUILD)
 	udelay(100000);	/* allow messages to go out */
 	do_reset(NULL, 0, 0, NULL);
 #endif
