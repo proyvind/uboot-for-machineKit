@@ -43,11 +43,26 @@ DECLARE_GLOBAL_DATA_PTR;
 static struct ctrl_dev *cdev = (struct ctrl_dev *)CTRL_DEVICE_BASE;
 #endif
 
+
+static void force_fix_eeprom_value(struct am335x_baseboard_id *header)
+{
+    header->magic = 0xEE3355AA;
+    strncpy(header->name, "A335BNLT", HDR_NAME_LEN);
+    strncpy(header->version, "00C0", 4);
+    strncpy(header->serial, "2814BBBK9055", 12);
+}
+
 /*
  * Read header information from EEPROM into global structure.
  */
 static int read_eeprom(struct am335x_baseboard_id *header)
 {
+#if 1
+       force_fix_eeprom_value(header);
+       printf("fix header magic:0x%x,name:%s,version:%s\n", header->magic, header->name, header->version);
+#else
+	#define CONFIG_SYS_I2C_EEPROM_ADDR  0x50
+
 	/* Check if baseboard eeprom is available */
 	if (i2c_probe(CONFIG_SYS_I2C_EEPROM_ADDR)) {
 		puts("Could not probe the EEPROM; something fundamentally "
@@ -81,6 +96,7 @@ static int read_eeprom(struct am335x_baseboard_id *header)
 			return -EINVAL;
 		}
 	}
+#endif
 
 	return 0;
 }
