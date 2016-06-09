@@ -276,8 +276,8 @@
 		"::off\0" \
 	"nfsopts=nolock\0" \
 	"rootpath=/export/rootfs\0" \
-	"netloadimage=tftp ${loadaddr} ${bootfile}\0" \
-	"netloadfdt=tftp ${fdtaddr} ${fdtfile}\0" \
+	"netloadimage=tftpboot ${loadaddr} ${bootfile}\0" \
+	"netloadfdt=tftpboot ${fdtaddr} ${fdtfile}\0" \
 	"netargs=setenv bootargs console=${console} " \
 		"${optargs} " \
 		"root=/dev/nfs " \
