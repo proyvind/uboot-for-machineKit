@@ -381,7 +381,7 @@ CONFIG_DM_DEMO_SHAPE=y
 #
 # DFU support
 #
-CONFIG_DFU_TFTP=y
+# CONFIG_DFU_TFTP is no set
 
 #
 # DMA Support
