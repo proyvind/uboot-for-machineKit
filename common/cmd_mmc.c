@@ -147,7 +147,7 @@ U_BOOT_CMD(
 	"- display info of the current MMC device"
 );
 
-static int do_mmcops(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+int do_mmcops(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
 	enum mmc_state state;
 
@@ -277,8 +277,9 @@ static int do_mmcops(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 			return 1;
 		}
 
-		printf("\nMMC %s: dev # %d, block # %d, count %d ... ",
-				argv[1], curr_device, blk, cnt);
+		if (getenv("mmcsilent") == NULL)
+			printf("\nMMC %s: dev # %d, block # %d, count %d ... ",
+					argv[1], curr_device, blk, cnt);
 
 		mmc_init(mmc);
 
@@ -300,8 +301,9 @@ static int do_mmcops(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 			BUG();
 		}
 
-		printf("%d blocks %s: %s\n",
-				n, argv[1], (n == cnt) ? "OK" : "ERROR");
+		if (getenv("mmcsilent") == NULL)
+			printf("%d blocks %s: %s\n",
+					n, argv[1], (n == cnt) ? "OK" : "ERROR");
 		return (n == cnt) ? 0 : 1;
 	}
 

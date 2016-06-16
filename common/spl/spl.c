@@ -32,6 +32,7 @@
 #include <image.h>
 #include <malloc.h>
 #include <linux/compiler.h>
+#include <env_callback.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -179,6 +180,13 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 
 	boot_device = spl_boot_device();
 	debug("boot device - %d\n", boot_device);
+
+#ifdef CONFIG_UART_THEN_USB_SPL
+	/* Hack: load SPL via UART, then use USB */
+	if (boot_device == BOOT_DEVICE_UART)
+		boot_device = BOOT_DEVICE_USBETH;
+#endif
+
 	switch (boot_device) {
 #ifdef CONFIG_SPL_RAM_DEVICE
 	case BOOT_DEVICE_RAM:
@@ -221,6 +229,11 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 #endif
 		break;
 #endif
+#ifdef CONFIG_SPL_USBETH_SUPPORT
+	case BOOT_DEVICE_USBETH:
+		spl_net_load_image("usb_ether");
+		break;
+#endif
 	default:
 		debug("SPL: Un-supported Boot Device\n");
 		hang();
@@ -260,4 +273,15 @@ void preloader_console_init(void)
 #ifdef CONFIG_SPL_DISPLAY_PRINT
 	spl_display_print();
 #endif
+}
+
+/*
+ * When CONFIG_SPL_NET_SUPPORT is set, we bring in and require a large
+ * subset of the environment code.  However, as the environment is not
+ * modifable interactively in this case we remove the environment
+ * callback support from the binary.  To do so we must provide an empty
+ * env_callback_init function.
+ */
+void env_callback_init(ENTRY *var_entry)
+{
 }

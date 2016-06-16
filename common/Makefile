@@ -59,6 +59,7 @@ COBJS-$(CONFIG_ENV_IS_IN_MMC) += env_mmc.o
 COBJS-$(CONFIG_ENV_IS_IN_FAT) += env_fat.o
 COBJS-$(CONFIG_ENV_IS_IN_NAND) += env_nand.o
 COBJS-$(CONFIG_ENV_IS_IN_NVRAM) += env_nvram.o
+COBJS-$(CONFIG_CMD_NANDECC) += cmd_nandecc.o
 COBJS-$(CONFIG_ENV_IS_IN_ONENAND) += env_onenand.o
 COBJS-$(CONFIG_ENV_IS_IN_SPI_FLASH) += env_sf.o
 COBJS-$(CONFIG_ENV_IS_IN_REMOTE) += env_remote.o
@@ -174,6 +175,8 @@ COBJS-y += cmd_usb.o
 COBJS-y += usb.o usb_hub.o
 COBJS-$(CONFIG_USB_STORAGE) += usb_storage.o
 endif
+COBJS-$(CONFIG_CMD_FASTBOOT) += cmd_fastboot.o
+
 COBJS-$(CONFIG_CMD_XIMG) += cmd_ximg.o
 COBJS-$(CONFIG_YAFFS2) += cmd_yaffs2.o
 COBJS-$(CONFIG_CMD_SPL) += cmd_spl.o
@@ -210,10 +213,7 @@ COBJS-y += cmd_nvedit.o
 COBJS-y += env_common.o
 COBJS-$(CONFIG_ENV_IS_IN_FLASH) += env_flash.o
 COBJS-$(CONFIG_SPL_YMODEM_SUPPORT) += xyzModem.o
-COBJS-$(CONFIG_SPL_NET_SUPPORT) += cmd_nvedit.o
 COBJS-$(CONFIG_SPL_NET_SUPPORT) += env_attr.o
-COBJS-$(CONFIG_SPL_NET_SUPPORT) += env_callback.o
-COBJS-$(CONFIG_SPL_NET_SUPPORT) += env_common.o
 COBJS-$(CONFIG_SPL_NET_SUPPORT) += env_flags.o
 COBJS-$(CONFIG_SPL_NET_SUPPORT) += env_nowhere.o
 COBJS-$(CONFIG_SPL_NET_SUPPORT) += miiphyutil.o
